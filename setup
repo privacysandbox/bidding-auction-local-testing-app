@@ -5,9 +5,11 @@ docker network create --driver=bridge --subnet=192.168.84.0/24 ba-dev
 mkdir certs
 cd certs
 curl -JLO "https://dl.filippo.io/mkcert/latest?for=linux/amd64"
-chmod +x mkcert-v*-linux-amd64
-./mkcert-v*-linux-amd64 -cert-file localhost.pem -key-file localhost-key.pem localhost
-rm mkcert-v*-linux-amd64
+mv mkcert-v*-linux-amd64 mkcert
+chmod +x mkcert
+./mkcert -cert-file localhost.pem -key-file localhost-key.pem localhost
+./mkcert -install
+rm mkcert
 cd ..
 
 # Install app dependencie
