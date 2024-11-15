@@ -1,16 +1,3 @@
-From 2341478a3a29b39aebb26591cb3256bcce7bf656 Mon Sep 17 00:00:00 2001
-From: "Kevin K. Lee" <kevinkiklee@google.com>
-Date: Fri, 8 Nov 2024 14:56:21 +0000
-Subject: [PATCH] Update start-up scripts
-
----
- .../http/multi_curl_http_fetcher_async.cc     |  5 ++++-
- tools/debug/start_auction                     |  7 ++++---
- tools/debug/start_bfe                         |  7 ++++---
- tools/debug/start_bidding                     |  7 ++++---
- tools/debug/start_sfe                         | 21 ++++++++++++-------
- 5 files changed, 29 insertions(+), 18 deletions(-)
-
 diff --git a/services/common/clients/http/multi_curl_http_fetcher_async.cc b/services/common/clients/http/multi_curl_http_fetcher_async.cc
 index ee9bbc4..6b60a89 100644
 --- a/services/common/clients/http/multi_curl_http_fetcher_async.cc
@@ -60,10 +47,15 @@ index 70ca3b9..2bc427b 100755
        "--security-opt=apparmor=unconfined"
    )
 diff --git a/tools/debug/start_bfe b/tools/debug/start_bfe
-index 5e752db..33f0f12 100755
+index 5e752db..832c30d 100755
 --- a/tools/debug/start_bfe
 +++ b/tools/debug/start_bfe
-@@ -21,7 +21,7 @@ export BUYER_KV_SERVER_ADDR=""
+@@ -16,12 +16,11 @@
+ source $(dirname "$0")/common
+ export EXTRA_DOCKER_RUN_ARGS="${COMMON_DOCKER_RUN_ARGS[@]} ${DOCKER_RUN_ARGS[@]}"
+ 
+-export BUYER_KV_SERVER_ADDR=""
+ 
  export SERVER_START_CMD=$(cat << END
  /server/bin/server \
  --init_config_client="false" --port=50051 \
@@ -72,7 +64,7 @@ index 5e752db..33f0f12 100755
  --buyer_kv_server_addr="${BUYER_KV_SERVER_ADDR}" \
  --enable_buyer_frontend_benchmarking="true" \
  --generate_bid_timeout_ms=60000 --bidding_signals_load_timeout_ms 60000 \
-@@ -31,7 +31,7 @@ export SERVER_START_CMD=$(cat << END
+@@ -31,7 +30,7 @@ export SERVER_START_CMD=$(cat << END
  --telemetry_config="mode: OFF" \
  --enable_otel_based_logging="true" \
  --consented_debug_token="test_token" \
@@ -81,7 +73,7 @@ index 5e752db..33f0f12 100755
  --enable_chaffing="false" \
  --enable_protected_audience="true" \
  --bfe_tcmalloc_background_release_rate_bytes_per_second=4096 \
-@@ -52,7 +52,8 @@ if [[ $1 == "--gdb" ]]; then
+@@ -52,7 +51,8 @@ if [[ $1 == "--gdb" ]]; then
  else
    docker_image_uri="$(docker load -i dist/debian/buyer_frontend_service_image.tar | sed -nr "s/^Loaded image: (.*)$/\1/p")"
    declare -a DOCKER_RUN_ARGS=(
@@ -179,6 +171,3 @@ index 0f2bd91..d186fea 100755
        "--security-opt=seccomp=unconfined"
        "--security-opt=apparmor=unconfined"
    )
--- 
-2.47.0.277.g8800431eea-goog
-
