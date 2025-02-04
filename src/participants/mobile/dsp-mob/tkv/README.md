@@ -1,6 +1,6 @@
 # Building and running the Trusted Key/Value (TKV) service
 
-See the main [`README.md`](/README.md) file for instructions on how to build and run the TKV service. Those instructions will set up a TKV instance that points to the key/value data in this directory.
+See the [`README-mobile.md`](/README-mobile.md) file for instructions on how to build and run the TKV service. Those instructions will help you set up a TKV instance that points to the key/value data in this directory.
 
 # Loading your own data into the TKV service
 

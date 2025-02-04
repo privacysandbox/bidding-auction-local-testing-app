@@ -1,6 +1,6 @@
 # bidding-auction-local-testing-app
 
-The B&A Local Testing App (LTA) is a companion application to Bidding & Auction Service for Privacy Sandbox, and runs locally alongside the B&A Services stacks on your development machine or VM. The LTA can be configured to work with either [web](#web-clients) or [mobile](#mobile-clients) B&A clients.
+The B&A Local Testing App (LTA) is a companion application to Bidding & Auction Service for Privacy Sandbox, and runs locally alongside the B&A Services stacks on your development machine or VM. The LTA can be configured to work with either [web](#web-client-demo) or [mobile](#mobile-client-demo) B&A clients.
 
 ## Web Client Demo
 
@@ -15,7 +15,7 @@ It also provides a demo web app to facilitate testing these scenarios:
 
 [![](./docs/app-introduction.gif)](/README-web.md)
 
-[Read more about web client demo.](/README-web.md)
+[Read more about the web client demo.](/README-web.md)
 
 ## Mobile Client Demo
 
