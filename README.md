@@ -13,9 +13,9 @@ The LTA provides locally-running DSP and SSP test servers that allow you to test
 
 It also provides a demo web app to facilitate testing these scenarios:
 
-[![](./docs/app-introduction.gif)](/web.md)
+[![](./docs/app-introduction.gif)](/README-web.md)
 
-[Start setting up the web client demo.](/web.md)
+[Read more about web client demo.](/README-web.md)
 
 ## Mobile Client Demo
 
@@ -23,6 +23,6 @@ The LTA provides locally-running DSP and SSP test servers that allow you to test
 
 It works alongside the [Project Flight](https://github.com/privacysandbox/project-flight) sample Android apps to demonstrate how an advertiser app and publisher app can participate in a B&A auction:
 
-[![](./docs/mobile-demo.gif)](/mobile.md)
+[![](./docs/mobile-demo.gif)](/README-mobile.md)
 
-[Start setting up the mobile client demo.](/mobile.md)
+[Read more about the mobile client demo.](/README-mobile.md)
