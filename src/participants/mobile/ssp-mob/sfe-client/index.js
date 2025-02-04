@@ -21,7 +21,7 @@ import protoLoader from '@grpc/proto-loader';
 // Path of the SFE proto file
 const protoPath = path.join(
   path.resolve(),
-  'src/participants/mobile/ssp-a/sfe-client/client.proto'
+  'src/participants/mobile/ssp-mob/sfe-client/client.proto'
 );
 
 // Load the proto file

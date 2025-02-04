@@ -15,7 +15,7 @@
  */
 
 /**
- * Bid generation logic for the DSP-C B&A buyer
+ * Bid generation logic for the DSP-MOB B&A buyer
  *
  * This file is loaded by the Bidding Service
  */

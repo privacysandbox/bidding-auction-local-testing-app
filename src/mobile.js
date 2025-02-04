@@ -24,11 +24,11 @@
 import fs from 'fs';
 import https from 'https';
 
-import sspA from './participants/mobile/ssp-a/server.js';
-import dspC from './participants/mobile/dsp-c/server.js';
+import sspMob from './participants/mobile/ssp-mob/server.js';
+import dspMob from './participants/mobile/dsp-mob/server.js';
 
-const DSP_C_PORT = 5001;
-const SSP_A_PORT = 6001;
+const DSP_MOB_PORT = 7001;
+const SSP_MOB_PORT = 8001;
 
 const serverOptions = {
   key: fs.readFileSync('certs/localhost-key.pem'),
@@ -37,13 +37,13 @@ const serverOptions = {
 
 export function start() {
   // Create the PA auction participant servers on https
-  https.createServer(serverOptions, dspC).listen(DSP_C_PORT);
-  https.createServer(serverOptions, sspA).listen(SSP_A_PORT);
+  https.createServer(serverOptions, dspMob).listen(DSP_MOB_PORT);
+  https.createServer(serverOptions, sspMob).listen(SSP_MOB_PORT);
 
   console.log('---');
-  console.log(`DSP-C server available at https://localhost:${DSP_C_PORT}`);
+  console.log(`DSP-MOB server available at https://localhost:${DSP_MOB_PORT}`);
   console.log('---');
-  console.log(`SSP-A server available at https://localhost:${SSP_A_PORT}`);
+  console.log(`SSP-MOB server available at https://localhost:${SSP_MOB_PORT}`);
   console.log('---');
   console.log(`Run the demo app at https://github.com/privacysandbox/project-flight`);
 }

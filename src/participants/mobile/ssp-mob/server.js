@@ -22,12 +22,12 @@ import morgan from 'morgan';
 
 import createSfeClient from './sfe-client/index.js';
 
-const sspBA = express();
-sspBA.use(express.json());
-sspBA.use(cors());
-sspBA.use(
+const sspMob = express();
+sspMob.use(express.json());
+sspMob.use(cors());
+sspMob.use(
   morgan(
-    '[SSP-A] [:date[clf]] :remote-addr :remote-user :method :url :status :response-time ms'
+    '[SSP-MOB] [:date[clf]] :remote-addr :remote-user :method :url :status :response-time ms'
   )
 );
 
@@ -55,9 +55,9 @@ function decodeRequest(auctionRequest) {
 }
 
 /**
- * Server-side B&A ad auction
+ * Server-side B&A mobile ad auction
  */
-sspBA.post('/ad-auction', (req, res) => {
+sspMob.post('/ad-auction', (req, res) => {
   const {
     adAuctionRequest, // Encrypted payload from the client. Base64 encoded.
   } = req.body;
@@ -71,11 +71,11 @@ sspBA.post('/ad-auction', (req, res) => {
   // SFE SelectAd request payload
   const selectAdRequest = {
     auction_config: {
-      seller: 'https://localhost:6001', // SSP-A B&A seller
+      seller: 'https://localhost:8001', // SSP-MOB B&A seller
       auction_signals: '{"testKey":"someValue"}',
       seller_signals: '{"testKey":"someValue"}',
       buyer_list: [
-        'privacy-sandbox-flight.web.app', // DSP-C B&A buyer
+        'privacy-sandbox-flight.web.app', // DSP-MOB B&A buyer
       ],
       per_buyer_config: {
         'privacy-sandbox-flight.web.app': { buyer_signals: '{"testKey": "someValue"}' },
@@ -92,7 +92,7 @@ sspBA.post('/ad-auction', (req, res) => {
   // Call SelectAd
   sfeClient.selectAd(selectAdRequest, metadata, (error, response) => {
     if (!response) {
-      console.log('[SSP-BA SFE client error] ', error);
+      console.log('[SSP-MOB SFE client error] ', error);
       return;
     }
 
@@ -111,12 +111,12 @@ sspBA.post('/ad-auction', (req, res) => {
     res.json({ serverAdAuctionResponse });
 
     console.log(
-      `[SSP-BA] Encoded serverAdAuctionResponse - ${serverAdAuctionResponse}`
+      `[SSP-MOB] Encoded serverAdAuctionResponse - ${serverAdAuctionResponse}`
     );
-    console.log(`[SSP-BA] Ad-Auction-Result hash - ${ciphertextShaHash}`);
+    console.log(`[SSP-MOB] Ad-Auction-Result hash - ${ciphertextShaHash}`);
   });
 });
 
-sspBA.use(express.static('src/participants/mobile/ssp-a'));
+sspMob.use(express.static('src/participants/mobile/ssp-mob'));
 
-export default sspBA;
+export default sspMob;

@@ -15,27 +15,23 @@
  */
 
 /**
- * Setup the DSP-C B&A buyer server
+ * Scoring logic for the SSP-MOB mobile seller
+ *
+ * This file loaded by Auction Service
  */
-import express from 'express';
-import morgan from 'morgan';
+function scoreAd(
+  adMetadata,
+  bid,
+  auctionConfig,
+  trustedScoringSignals,
+  browserSignals
+) {
+  return {
+    desirability: bid,
+    allowComponentAuction: true,
+    // There is a bug right now and the "ad" field cannot be empty
+    ad: 'some-ad-metadata',
+  };
+}
 
-const dspX = express();
-
-dspX.use(
-  morgan(
-    '[DSP-C] [:date[clf]] :remote-addr :remote-user :method :url :status :response-time ms'
-  )
-);
-
-dspX.use(
-  express.static('src/participants/mobile/dsp-c', {
-    setHeaders: (res, path) => {
-      if (path.includes('generate-bid.js')) {
-        return res.set('Ad-Auction-Allowed', 'true');
-      }
-    },
-  })
-);
-
-export default dspX;
+function reportResult(auctionConfig, browserSignals) {}

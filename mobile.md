@@ -1,12 +1,12 @@
 ## Description
 
 To ease the B&A testing process, the LTA provides the following participants:
-* DSP-C 
-* SSP-A 
+* DSP-MOB 
+* SSP-MOB 
 
 Each participant provides mock bidding/scoring logic for B&A running locally to use.
 
-After starting all the services and LTA, you can point the [Project Flight app](https://github.com/privacysandbox/project-flight) at SSP-A and see the B&A auctions take place.
+After starting all the services and LTA, you can point the [Project Flight app](https://github.com/privacysandbox/project-flight) at SSP-MOB and see the B&A auctions take place.
 
 ## Quickstart
 
@@ -22,7 +22,7 @@ TL;DR:
 
 #### Prepare a Linux machine
 
-Use a Linux local machine, local VM, or provision a Linux VM from the cloud provider of your choice. Note that we will be connecting to port 6001 of this machine using the mobile test app. Make sure the port is accessible to your test device or Android emulator on your development machine so you can connect to it.
+Use a Linux local machine, local VM, or provision a Linux VM from the cloud provider of your choice. Note that we will be connecting to port 8001 of this machine using the mobile test app. Make sure the port is accessible to your test device or Android emulator on your development machine so you can connect to it.
 
 #### Install Docker
 
@@ -122,20 +122,20 @@ Once the build is successful, run the start script:
 
 Execute each command in a separate terminal window. A terminal manager such a [`tmux`](https://github.com/tmux/tmux/wiki) is highly recommended.
 
-#### Mobile B&A (DSP-C and SSP-A)
+#### Mobile B&A (DSP-MOB and SSP-MOB)
 
 Run the following commands in root folder of the `bidding-auction-servers` directory
 
-##### DSP-C Bidding Service
+##### DSP-MOB Bidding Service
 
 ```bash
 DOCKER_RUN_ARGS_STRING="--ip=192.168.84.101 --network=ba-dev" \
-BIDDING_JS_URL=https://192.168.84.100:5001/generate-bid.js \
+BIDDING_JS_URL=https://192.168.84.100:7001/generate-bid.js \
 SKIP_TLS_VERIFICATION=true \
   ./tools/debug/start_bidding
 ```
 
-##### DSP-C BFE Service
+##### DSP-MOB BFE Service
 
 ```bash
 DOCKER_RUN_ARGS_STRING="--ip=192.168.84.102 --network=ba-dev" \
@@ -145,20 +145,20 @@ SKIP_TLS_VERIFICATION=true \
   ./tools/debug/start_bfe
 ```
 
-##### SSP-A Auction Service 
+##### SSP-MOB Auction Service 
 
 ```bash
 DOCKER_RUN_ARGS_STRING="--ip=192.168.84.103 --network=ba-dev" \
-AUCTION_JS_URL="https://192.168.84.100:6001/score-ad.js" \
+AUCTION_JS_URL="https://192.168.84.100:8001/score-ad.js" \
 SKIP_TLS_VERIFICATION=true \
   ./tools/debug/start_auction
 ```
 
-##### SSP-A SFE Service
+##### SSP-MOB SFE Service
 
 ```bash
 DOCKER_RUN_ARGS_STRING="--ip=192.168.84.104 --network=ba-dev" \
-SELLER_ORIGIN_DOMAIN="https://localhost:6001" \
+SELLER_ORIGIN_DOMAIN="https://localhost:8001" \
 AUCTION_SERVER_ADDR="192.168.84.103:50061" \
 TRUSTED_KEY_VALUE_V2_SIGNALS_ADDR="192.168.84.105:50051" \
 BUYER_SERVER_ADDRS_JSON='{"privacy-sandbox-flight.web.app":{"url":"192.168.84.102:50051","cloudPlatform":"LOCAL"}}' \
@@ -166,29 +166,29 @@ SKIP_TLS_VERIFICATION=true \
   ./tools/debug/start_sfe
 ```
 
-#### TKV Services for Mobile B&A (DSP-C and SSP-A)
+#### TKV Services for Mobile B&A (DSP-MOB and SSP-MOB)
 
 > [!IMPORTANT]
 > Run the following commands in root folder of the `bidding-auction-local-testing-app` directory
 
-##### DSP-C Trusted Key/Value Service
+##### DSP-MOB Trusted Key/Value Service
 
 ```bash
 docker run --ip 192.168.84.106 --network ba-dev \
-  -it --init --rm --name tkv-dsp-c \
-  --volume=$PWD/src/participants/mobile/dsp-c/tkv/deltas:/tmp/deltas \
-  --volume=$PWD/src/participants/mobile/dsp-c/tkv/realtime:/tmp/realtime \
+  -it --init --rm --name tkv-dsp-mob \
+  --volume=$PWD/src/participants/mobile/dsp-mob/tkv/deltas:/tmp/deltas \
+  --volume=$PWD/src/participants/mobile/dsp-mob/tkv/realtime:/tmp/realtime \
   bazel/production/packaging/local/data_server:server_docker_image \
   -delta_directory=/tmp/deltas -realtime_directory=/tmp/realtime
 ```
 
-##### SSP-A Trusted Key/Value Service
+##### SSP-MOB Trusted Key/Value Service
 
 ```bash
 docker run --ip 192.168.84.105 --network ba-dev \
-  -it --init --rm --name tkv-ssp-a \
-  --volume=$PWD/src/participants/mobile/ssp-a/tkv/deltas:/tmp/deltas \
-  --volume=$PWD/src/participants/mobile/ssp-a/tkv/realtime:/tmp/realtime \
+  -it --init --rm --name tkv-ssp-mob \
+  --volume=$PWD/src/participants/mobile/ssp-mob/tkv/deltas:/tmp/deltas \
+  --volume=$PWD/src/participants/mobile/ssp-mob/tkv/realtime:/tmp/realtime \
   bazel/production/packaging/local/data_server:server_docker_image \
   -delta_directory=/tmp/deltas -realtime_directory=/tmp/realtime
 ```
@@ -199,15 +199,15 @@ Follow the [Project Flight instructions](https://github.com/privacysandbox/proje
 
 ## Design
 
-* `SSP-A` - B&A-enabled seller 
-* `DSP-C` - B&A-enabled buyer
+* `SSP-MOB` - B&A-enabled seller 
+* `DSP-MOB` - B&A-enabled buyer
 
 ### Architecture
 
 ![](./docs/mobile-architecture.svg)
 
-* DSP-C - https://localhost:5001
-* SSP-A - https://localhost:6001
+* DSP-MOB - https://localhost:7001
+* SSP-MOB - https://localhost:8001
 
 ### Docker network
 
@@ -217,8 +217,8 @@ To examine the `ba-dev` network, run `docker network inspect ba-dev` in the comm
 
 #### Auction participants
 
-* DSP-C - https://192.168.84.100:5001
-* SSP-A - https://192.168.84.100:6001
+* DSP-MOB - https://192.168.84.100:7001
+* SSP-MOB - https://192.168.84.100:8001
 
 #### B&A Services
 
@@ -229,5 +229,5 @@ To examine the `ba-dev` network, run `docker network inspect ba-dev` in the comm
 
 #### TKV Services
 
-* TKV-SSP-A - grpc://192.168.84.105:50051
-* TKV-DSP-C - grpc://192.168.84.106:50051
+* TKV-SSP-MOB - grpc://192.168.84.105:50051
+* TKV-DSP-MOB - grpc://192.168.84.106:50051
