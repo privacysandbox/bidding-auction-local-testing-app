@@ -1,6 +1,7 @@
 # Setup custom Docker bridge
 # Documentation: https://docs.docker.com/engine/network/
-docker network create --driver=bridge --subnet=192.168.84.0/24 ba-dev 
+docker network create --driver=bridge --subnet=192.168.84.0/24 \
+--opt com.docker.network.bridge.name=ba-dev ba-dev 
 
 # Setup self-signed SSL certificates
 # Documentation: https://github.com/FiloSottile/mkcert?tab=readme-ov-file#linux

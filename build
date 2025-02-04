@@ -1,1 +1,1 @@
-docker build -t ba-local-testing-app .
+docker build --network host -t ba-local-testing-app .
