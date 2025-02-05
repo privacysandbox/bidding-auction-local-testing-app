@@ -6,7 +6,7 @@ To ease the B&A testing process, the LTA provides the following participants:
 
 Each participant provides mock bidding/scoring logic for B&A running locally to use.
 
-After starting all the services and LTA, you can point the [Project Flight app](https://github.com/privacysandbox/project-flight) at SSP-MOB and see the B&A auctions take place.
+After starting all the services and LTA, you can point your test app at SSP-MOB and see the B&A auctions take place.
 
 ## Quickstart
 
@@ -16,13 +16,13 @@ TL;DR:
 3. Build the B&A services
 4. Build and start the DSP/SSP servers
 5. Start the B&A services
-6. Run [Project Flight](https://github.com/privacysandbox/project-flight) test app
+6. Run your test app
 
 ### Setup prerequisites
 
 #### Prepare a Linux machine
 
-Use a Linux local machine, local VM, or provision a Linux VM from the cloud provider of your choice. Note that we will be connecting to port 8001 of this machine using the mobile test app. Make sure the port is accessible to your test device or Android emulator on your development machine so you can connect to it.
+Use a Linux local machine, local VM, or provision a Linux VM from the cloud provider of your choice. Note that we will be connecting to port 8001 of this machine using your mobile test app. Make sure the port is accessible to your test device or Android emulator on your development machine so you can connect to it.
 
 #### Install Docker
 
@@ -194,9 +194,58 @@ docker run --ip 192.168.84.105 --network ba-dev \
   -delta_directory=/tmp/deltas -realtime_directory=/tmp/realtime
 ```
 
-### Run the Project Flight app
+### Configure and run your test app
 
-Follow the [Project Flight instructions](https://github.com/privacysandbox/project-flight) to run the example mobile apps in B&A mode to test the Bidding & Auction services you just set up.
+Configure your mobile app to test the Bidding & Auction services you just set up.
+
+#### Use the test key
+
+The B&A SFE service uses a hardcoded decryption key to decrypt the ad selection data when running in test mode. To configure your app to use the complementary test encryption key to encrypt the ad selection data, run the following command:
+
+```bash
+adb shell device_config put adservices fledge_auction_server_auction_key_fetch_uri "https://storage.googleapis.com/ba-test-buyer/coordinator-test-key.json"
+```
+
+#### Create custom audiences
+
+Follow the instructions in the [Join a custom audience](https://developers.google.com/privacy-sandbox/private-advertising/protected-audience/android/developer-guide/define-audience-data#join-custom) section of the Protected Audience documentation to join three different custom audiences: "athens", "berlin", and "cairo". Here is an example of the "athens" CA, with values designed to work with this demo:
+
+```kotlin
+val name = "athens"
+val topLevelDomain = "privacy-sandbox-flight.web.app"
+val customAudience = CustomAudience.Builder()
+  .setName(name)
+  .setBuyer(AdTechIdentifier.fromString(topLevelDomain))
+  .setDailyUpdateUri("https://$topLevelDomain/protected-audience/Functions/BiddingDaily.html")
+  .setBiddingLogicUri("https://$topLevelDomain/protected-audience/Logic/BiddingLogic.js")
+  .setActivationTime(Instant.now())
+  .setExpirationTime(Instant.now().plus(Duration.ofDays(7)))
+  .setTrustedBiddingData(TrustedBiddingData.Builder()
+      .setTrustedBiddingKeys(listOf("\"valid_signals\": true", "demo-key"))
+      .setTrustedBiddingUri("https://$topLevelDomain/protected-audience/Functions/BiddingTrusted.js")
+      .build())
+  .setAds(
+      listOf(
+          AdData.Builder()
+              .setRenderUri("https://$topLevelDomain/render/$name.jpg")
+              .setMetadata(JSONObject().toString())
+              .setAdRenderId("1")
+              .build()
+      )
+  )
+  .setUserBiddingSignals(AdSelectionSignals.EMPTY)
+  .build()
+```
+
+#### Start the auction
+
+Follow the instructions in the [Run an auction](https://developers.google.com/privacy-sandbox/private-advertising/protected-audience/android/bidding-and-auction-services.md#run-auction) section of the Bidding and Auction documentation to get the encrypted ad selection data, send it in a POST request to the SSP-MOB seller ad service, and persist the results.
+
+Your POST request should be sent to `https://<your-servers-public-ip>:8001/ad-auction` with a `Content-Type: application/json` header and this body:
+
+```json
+{"adAuctionRequest":"<base-64-encoded-adSelectionData-value>"}
+```
 
 ## Design
 

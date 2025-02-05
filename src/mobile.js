@@ -45,5 +45,5 @@ export function start() {
   console.log('---');
   console.log(`SSP-MOB server available at https://localhost:${SSP_MOB_PORT}`);
   console.log('---');
-  console.log(`Run the demo app at https://github.com/privacysandbox/project-flight`);
+  console.log(`See https://github.com/privacysandbox/bidding-auction-local-testing-app/blob/main/README-mobile.md`);
 }
