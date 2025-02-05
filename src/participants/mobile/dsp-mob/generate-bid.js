@@ -15,21 +15,22 @@
  */
 
 /**
- * Setup the app server and the B&A participant servers.
+ * Bid generation logic for the DSP-MOB B&A buyer
  *
- * This file contains the logic for the testing app,
- * and does not contain Protected Audience logic.
+ * This file is loaded by the Bidding Service
  */
+function generateBid(
+  interestGroup,
+  auctionSignals,
+  perBuyerSignals,
+  trustedBiddingSignals,
+  browserSignals
+) {
+  return {
+    bid: Math.floor(Math.random() * 100),
+    render: `https://privacy-sandbox-flight.web.app/render/${interestGroup.name}.jpg`,
+    allowComponentAuction: !!browserSignals.topLevelSeller,
+  };
+}
 
-
-import * as mobile from './mobile.js';
-import * as web from './web.js';
-
-const testServers = {mobile, web};
-const mode = process.argv[2] === 'mobile' ? 'mobile' : 'web';
-
-console.log('---');
-console.log(`Starting ${mode.toUpperCase()} testing servers`);
-
-// Launch either mobile or web test servers depending on chosen mode
-testServers[mode].start()
+function reportWin() {}

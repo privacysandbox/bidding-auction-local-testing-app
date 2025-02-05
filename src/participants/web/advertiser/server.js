@@ -1,5 +1,5 @@
 /*
- Copyright 2025 Google LLC
+ Copyright 2022 Google LLC
 
  Licensed under the Apache License, Version 2.0 (the "License");
  you may not use this file except in compliance with the License.
@@ -15,21 +15,21 @@
  */
 
 /**
- * Setup the app server and the B&A participant servers.
+ * Setup the advertiser server
  *
- * This file contains the logic for the testing app,
- * and does not contain Protected Audience logic.
+ * The only function of this server is to server the advertiser page
  */
 
+import express from 'express';
+import morgan from 'morgan';
 
-import * as mobile from './mobile.js';
-import * as web from './web.js';
+const advertiser = express();
+advertiser.use(
+  morgan(
+    '[Advertiser] [:date[clf]] :remote-addr :remote-user :method :url :status :response-time ms'
+  )
+);
 
-const testServers = {mobile, web};
-const mode = process.argv[2] === 'mobile' ? 'mobile' : 'web';
+advertiser.use(express.static('src/participants/web/advertiser/'));
 
-console.log('---');
-console.log(`Starting ${mode.toUpperCase()} testing servers`);
-
-// Launch either mobile or web test servers depending on chosen mode
-testServers[mode].start()
+export default advertiser;

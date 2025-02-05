@@ -1,0 +1,4 @@
+key,mutation_type,logical_commit_time,value,value_type
+https://privacy-sandbox-flight.web.app/render/athens.jpg,UPDATE,1680815895468055,foo,string
+https://privacy-sandbox-flight.web.app/render/berlin.jpg,UPDATE,1680815895468056,bar,string
+https://privacy-sandbox-flight.web.app/render/cairo.jpg,UPDATE,1680815895468057,baz,string

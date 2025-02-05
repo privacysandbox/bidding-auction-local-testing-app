@@ -1,0 +1,2 @@
+key,mutation_type,logical_commit_time,value,value_type
+demo-key,UPDATE,1680815895468055,demo-value,string

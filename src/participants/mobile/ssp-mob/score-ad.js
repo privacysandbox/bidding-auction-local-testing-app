@@ -15,21 +15,23 @@
  */
 
 /**
- * Setup the app server and the B&A participant servers.
+ * Scoring logic for the SSP-MOB mobile seller
  *
- * This file contains the logic for the testing app,
- * and does not contain Protected Audience logic.
+ * This file loaded by Auction Service
  */
+function scoreAd(
+  adMetadata,
+  bid,
+  auctionConfig,
+  trustedScoringSignals,
+  browserSignals
+) {
+  return {
+    desirability: bid,
+    allowComponentAuction: true,
+    // There is a bug right now and the "ad" field cannot be empty
+    ad: 'some-ad-metadata',
+  };
+}
 
-
-import * as mobile from './mobile.js';
-import * as web from './web.js';
-
-const testServers = {mobile, web};
-const mode = process.argv[2] === 'mobile' ? 'mobile' : 'web';
-
-console.log('---');
-console.log(`Starting ${mode.toUpperCase()} testing servers`);
-
-// Launch either mobile or web test servers depending on chosen mode
-testServers[mode].start()
+function reportResult(auctionConfig, browserSignals) {}

@@ -1,0 +1,17 @@
+docker run -it --rm \
+  --name ba-lta \
+  --network ba-dev \
+  --ip 192.168.84.100 \
+  --publish 3000:3000 \
+  --publish 4001:4001 \
+  --publish 4002:4002 \
+  --publish 5001:5001 \
+  --publish 5002:5002 \
+  --publish 5003:5003 \
+  --publish 5004:5004 \
+  --publish 6001:6001 \
+  --publish 6002:6002 \
+  --publish 6003:6003 \
+  --publish 6004:6004 \
+  ba-local-testing-app \
+  npm start -- web
