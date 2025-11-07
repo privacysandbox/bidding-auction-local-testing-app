@@ -1,3 +1,13 @@
+**This technology is scheduled for deprecation.**
+
+This repository will be archived and will no longer be updated.
+
+See our [Update on Plans for Privacy Sandbox Technologies](https://privacysandbox.com/news/update-on-plans-for-privacy-sandbox-technologies/).
+
+[Privacy Sandbox feature status](https://privacysandbox.google.com/overview/status) provides more information about the status of individual APIs and platform features.
+
+---
+
 # bidding-auction-local-testing-app
 
 The B&A Local Testing App (LTA) is a companion application to Bidding & Auction Service for Privacy Sandbox, and runs locally alongside the B&A Services stacks on your development machine or VM. The LTA can be configured to work with either [web](#web-client-demo) or [mobile](#mobile-client-demo) B&A clients.
